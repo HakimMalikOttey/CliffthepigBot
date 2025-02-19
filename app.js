@@ -1,6 +1,7 @@
 var http = require('http')
 const tmi = require('tmi.js');
-http.createServer(function(request,response){
+
+
     const client = new tmi.Client({
         channels: [ 'cliffthepig' ]
     });
@@ -21,6 +22,5 @@ http.createServer(function(request,response){
         else if(listeningForCount && message == '1'){
             users[tags.username] = true;
         }
-    
+        console.log(`${tags['display-name']}: ${message}`);
     });
-}).listen(process.env.PORT)

@@ -118,6 +118,7 @@
     "string-width": "^4.2.3",
     "strip-ansi": "^6.0.1",
     "supports-color": "^7.2.0",
+    "tmi.js": "^1.8.5",
     "to-regex-range": "^5.0.1",
     "toidentifier": "^1.0.1",
     "ua-parser-js": "^1.0.40",
@@ -135,7 +136,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"node app.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
