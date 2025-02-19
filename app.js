@@ -1,25 +1,40 @@
+require('dotenv').config()
 const tmi = require('tmi.js');
-
-
+const regexpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\W+)?(.*)?/);
+const commands = {
+    website:{
+        response:"https://google.com"
+    },
+    upvote:{
+        response:(user)=>`User ${user} was just upvoted`
+    }
+}
     const client = new tmi.Client({
+        connection:{
+            reconnect:true
+        },
+        identity: {
+            username: process.env.TWITCH_BOT_USERNAME,
+            password: process.env.TWITCH_OAUTH_TOKEN
+        },
         channels: [ 'cliffthepig' ]
     });
+    
     
     client.connect();
     let count = 0;
     let listeningForCount = false;
     const users = {}
     client.on('message', (channel, tags, message, self) => {
-        const {username } = tags;
-        if(self) return true;
-        if(username === 'cliffthepig' && message === '!start-count'){
-            listeningForCount = true;
+        const isNotBot = tags.username.toLowerCase() !== process.env.TWITCH_BOT_USERNAME;
+        const {username} = tags;
+        if(!isNotBot) return;
+        const [raw,command,argument] = message.match(regexpCommand);
+        const {response} =  commands[command] || {}
+        if(typeof response === 'function'){
+            client.say(channel,response(tags.username));
         }
-        else if(username === 'cliffthepig' && message === '!end-count'){
-            listeningForCount = false;
+        else if(typeof response === 'string'){
+            client.say(channel,response);
         }
-        else if(listeningForCount && message == '1'){
-            users[tags.username] = true;
-        }
-        console.log(`${tags['display-name']}: ${message}`);
     });
