@@ -1,4 +1,5 @@
 var http = require('http')
+const tmi = require('tmi.js');
 http.createServer(function(request,response){
     const client = new tmi.Client({
         channels: [ 'cliffthepig' ]
