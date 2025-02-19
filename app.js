@@ -1,4 +1,3 @@
-var http = require('http')
 const tmi = require('tmi.js');
 
 
