@@ -13,7 +13,8 @@ const commands = {
 };
 const io = new Server({
     cors:{
-        origin:"*"
+        origin:"*",
+        credentials:true
     }
 });
     const client = new tmi.Client({
