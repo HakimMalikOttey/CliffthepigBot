@@ -1,5 +1,7 @@
 require('dotenv').config()
 const tmi = require('tmi.js');
+const {Server } = require('socket.io');
+const PORT = process.env.PORT || 3000;
 const regexpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\W+)?(.*)?/);
 const commands = {
     website:{
@@ -8,7 +10,12 @@ const commands = {
     upvote:{
         response:(user)=>`User ${user} was just upvoted`
     }
-}
+};
+const io = new Server({
+    cors:{
+        origin:"*"
+    }
+});
     const client = new tmi.Client({
         connection:{
             reconnect:true
@@ -25,16 +32,23 @@ const commands = {
     let count = 0;
     let listeningForCount = false;
     const users = {}
+    var isNotBot = "";
+    var username = "";
+    io.on("connection",(socket)=>{
     client.on('message', (channel, tags, message, self) => {
-        const isNotBot = tags.username.toLowerCase() !== process.env.TWITCH_BOT_USERNAME;
-        const {username} = tags;
+        isNotBot = tags.username.toLowerCase() !== process.env.TWITCH_BOT_USERNAME;
+        username = tags.username;
         if(!isNotBot) return;
         const [raw,command,argument] = message.match(regexpCommand);
         const {response} =  commands[command] || {}
         if(typeof response === 'function'){
-            client.say(channel,response(tags.username));
+            client.say(channel,response(username));
+            socket.emit('updatePNGTuber',"Wrestling");
         }
         else if(typeof response === 'string'){
             client.say(channel,response);
+            socket.emit('updatePNGTuber',"Wrestling");
         }
     });
+});
+io.listen(PORT);
