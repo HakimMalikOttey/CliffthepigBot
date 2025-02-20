@@ -16,7 +16,11 @@ const commands = {
         response:(user)=>`User ${user} was just upvoted`
     }
 };
-const io = new Server(server);
+const io = new Server(server,{
+        cors: {
+          origin: '*',
+        }
+});
     const client = new tmi.Client({
         connection:{
             reconnect:true
