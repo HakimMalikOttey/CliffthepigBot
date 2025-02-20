@@ -1,6 +1,7 @@
 require('dotenv').config()
 const tmi = require('tmi.js');
 const {Server } = require('socket.io');
+const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 const regexpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\W+)?(.*)?/);
 const commands = {
@@ -12,10 +13,11 @@ const commands = {
     }
 };
 const io = new Server({
-    cors:{
-        origin:"*",
-        credentials:true
-    }
+    cors: {
+        origin: "https://stream-chat-cliffthepig-4fd0a398a440.herokuapp.com",
+        allowedHeaders: ["my-custom-header"],
+        credentials: true
+      }
 });
     const client = new tmi.Client({
         connection:{
