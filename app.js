@@ -1,6 +1,10 @@
 require('dotenv').config()
+const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
 const tmi = require('tmi.js');
-const {Server } = require('socket.io');
+const {Server} = require('socket.io');
 const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 const regexpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\W+)?(.*)?/);
@@ -12,13 +16,7 @@ const commands = {
         response:(user)=>`User ${user} was just upvoted`
     }
 };
-const io = new Server({
-    cors: {
-        origin: "https://stream-chat-cliffthepig-4fd0a398a440.herokuapp.com",
-        allowedHeaders: ["my-custom-header"],
-        credentials: true
-      }
-});
+const io = new Server(server);
     const client = new tmi.Client({
         connection:{
             reconnect:true
@@ -29,12 +27,12 @@ const io = new Server({
         },
         channels: [ 'cliffthepig' ]
     });
-    
+    app.get('/',(req,res)=>{
+        res.write(`<h1>Socket IO has started at port: ${PORT} </h1>`);
+        res.end();
+    });
     
     client.connect();
-    let count = 0;
-    let listeningForCount = false;
-    const users = {}
     var isNotBot = "";
     var username = "";
     io.on("connection",(socket)=>{
@@ -54,4 +52,4 @@ const io = new Server({
         }
     });
 });
-io.listen(PORT);
+server.listen(PORT);
