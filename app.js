@@ -88,8 +88,8 @@ client.on('message', (channel, tags, message, self) => {
     isNotBot = tags.username.toLowerCase() !== process.env.TWITCH_BOT_USERNAME.toLowerCase();
     username = tags.username;
     if(!isNotBot) return;
+    if(message.trim()[0] == '!'){
     const [raw,command,argument] = message.match(regexpCommand);
-    if(command){
     const {response} =  commands[command] || {}
     if(response){
     if(typeof response === 'function'){
