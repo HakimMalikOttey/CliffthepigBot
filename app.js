@@ -88,9 +88,10 @@ client.on('message', (channel, tags, message, self) => {
     isNotBot = tags.username.toLowerCase() !== process.env.TWITCH_BOT_USERNAME;
     username = tags.username;
     if(!isNotBot) return;
+    console.log(message)
     const [raw,command,argument] = message.match(regexpCommand);
     const {response} =  commands[command] || {}
-    if(response )
+    if(response){
     if(typeof response === 'function'){
         client.say(channel,response(username));
         io.emit('updatePNGTuber',"Wrestling");
@@ -99,5 +100,6 @@ client.on('message', (channel, tags, message, self) => {
         client.say(channel,response);
         io.emit('updatePNGTuber',"Wrestling");
     }
+}
 });
 server.listen(PORT);
