@@ -90,7 +90,7 @@ client.on('message', (channel, tags, message, self) => {
     if(!isNotBot) return;
     const [raw,command,argument] = message.match(regexpCommand);
     const {response} =  commands[command] || {}
-    if(response){
+    if(response != {} ){
     if(typeof response === 'function'){
         client.say(channel,response(username));
         io.emit('updatePNGTuber',"Wrestling");
