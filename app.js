@@ -89,8 +89,8 @@ client.on('message', (channel, tags, message, self) => {
     username = tags.username;
     if(!isNotBot) return;
     const [raw,command,argument] = message.match(regexpCommand);
+    if(command){
     const {response} =  commands[command] || {}
-    console.log("reached")
     if(response){
     if(typeof response === 'function'){
         client.say(channel,response(username));
@@ -101,5 +101,6 @@ client.on('message', (channel, tags, message, self) => {
         io.emit('updatePNGTuber',"Wrestling");
     }
 }
+    }
 });
 server.listen(PORT);
