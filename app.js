@@ -9,12 +9,55 @@ const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 const regexpCommand = new RegExp(/^!([a-zA-Z0-9]+)(?:\W+)?(.*)?/);
 const commands = {
-    website:{
-        response:"https://google.com"
+    bearhug:{
+        response: `Terrence isn't going to let go that easily!`,
+        type: 'tuberChange',
+        action:'terrencechokecliff'
     },
-    upvote:{
-        response:(user)=>`User ${user} was just upvoted`
-    }
+    bearchoke:{
+        response: `Gonna get put in the sling!`,
+        type: 'tuberchange',
+        action:'terrencechokecliffjock'
+    },
+    pigpen:{
+        response: `You're my appetizer~!`,
+        type: 'tuberchange',
+        action: 'cliffchoketerrence'
+    },
+    saltlick:{
+        response: `Mmmm...blueberry!`,
+        type: 'tuberchange',
+        action: 'cliffchoketerrencejock'
+    },
+    side:{
+        response: 'Getting pumped for the big fight!',
+        type: 'tuberchange',
+        action: 'cliffside'
+    },
+    boots:{
+        response: 'Here to fix your pipes (:',
+        type: 'tuberchange',
+        action:'terrencejock'
+    },
+    back:{
+        response: 'Chained and collared.',
+        type: 'tuberchange',
+        action: 'dominickliffthong'
+    },
+    hair:{
+        response: 'Dominic decided to let his hair grow!',
+        type: 'tuberchange',
+        action:'dominicfrontflex'
+    },
+    lost:{
+        response: `Caught a nice piece of meat today!`,
+        type:'tuberchange',
+        action:'dominickliffcarry'
+    },
+    
+    // pigpen:{
+    //     response:(user)=>`User ${user} was just upvoted`
+    // }
 };
 const io = new Server(server,{
         cors: {
@@ -47,6 +90,7 @@ client.on('message', (channel, tags, message, self) => {
     if(!isNotBot) return;
     const [raw,command,argument] = message.match(regexpCommand);
     const {response} =  commands[command] || {}
+    if(response )
     if(typeof response === 'function'){
         client.say(channel,response(username));
         io.emit('updatePNGTuber',"Wrestling");
