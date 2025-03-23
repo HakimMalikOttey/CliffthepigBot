@@ -85,10 +85,9 @@ const io = new Server(server,{
     io.on("connection",(socket)=>{
 });
 client.on('message', (channel, tags, message, self) => {
-    isNotBot = tags.username.toLowerCase() !== process.env.TWITCH_BOT_USERNAME;
+    isNotBot = tags.username.toLowerCase() !== process.env.TWITCH_BOT_USERNAME.toLowerCase();
     username = tags.username;
     if(!isNotBot) return;
-    console.log(message)
     const [raw,command,argument] = message.match(regexpCommand);
     const {response} =  commands[command] || {}
     if(response){
